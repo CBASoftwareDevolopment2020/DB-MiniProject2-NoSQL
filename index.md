@@ -128,21 +128,21 @@ MERGE (m)-[:ACTED]-(a)
 ### Queries
 
 **Get name of persons who acted in a movie in 2006**  
-_cypher_
+_cypher shell_
 ```sql
 MATCH(Year {year: "2006"})-[:RELEASED]-(:Movie)-[:ACTED]-(p:Person) 
 return p.name
 ```
 
 **Get amount of persons that acted in a movie directed by David Yates**
-_cypher_
+_cypher shell_
 ```sql
 MATCH (:Person {name: "David Yates"})-[:DIRECTED]-(:Movie)-[:ACTED]-(a:Person) 
 RETURN count(distinct a)
 ```
 
 **Get genres Christian Bale appeared in**  
-_cypher_
+_cypher shell_
 ```sql
 MATCH(p:Person {name:"Christian Bale"})-[:ACTED]-(:Movie)-[:GENRE]-(g:Genre)
 return count(g), g.name
