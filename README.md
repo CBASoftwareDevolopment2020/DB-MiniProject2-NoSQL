@@ -7,7 +7,7 @@ By **Daniel, Jakob, Nikolaj & Stephan**
 Institute **CPHBusiness**  
   
 Education **Software Development**  
-Elective **Databases**  
+Course **Databases**  
   
 ###  Objective
   
