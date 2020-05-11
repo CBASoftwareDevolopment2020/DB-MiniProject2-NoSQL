@@ -12,7 +12,7 @@ By **Daniel, Jakob, Nikolaj & Stephan**
 Institute **CPHBusiness**  
 
 Education **Software Development**  
-Elective **Databases**  
+Course **Databases**  
 
 ### Objective {ignore=true}
 The objective of this assignment is to provide you with experience in analysis and design of database
@@ -270,5 +270,3 @@ ___
 
 #### Acid
 #### CAP Theorem
-
-
