@@ -83,7 +83,7 @@ ___
 
 Add `data.csv` to the import folder for the selected database.
 
-**add nodes**
+**add nodes**  
 _cypher shell_
 ```sql
 LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
@@ -94,7 +94,7 @@ FOREACH(n IN split(row.Actors, ", ")|MERGE (a:Person {name: n}))
 FOREACH(n IN split(row.Genre, ",")|MERGE (e:Genre {name: n}))
 ```
 
-**add director and released to movie relations**
+**add director and released to movie relations**  
 _cypher shell_
 ```sql
 LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
@@ -105,7 +105,7 @@ MERGE (d)-[:DIRECTED]-(m)
 MERGE (m)-[:RELEASED]-(y)
 ```
 
-**add genre to movies relations**
+**add genre to movies relations**  
 _cypher shell_
 ```sql
 LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
@@ -115,7 +115,7 @@ MATCH (g:Genre {name: n})
 MERGE (m)-[:GENRE]-(g)
 ```
 
-**add actor to movies relations**
+**add actor to movies relations**  
 _cypher shell_
 ```sql
 LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
@@ -127,7 +127,7 @@ MERGE (m)-[:ACTED]-(a)
 
 ### Queries
 
-**Get name of persons who acted in a movie in 2006**
+**Get name of persons who acted in a movie in 2006**  
 _cypher_
 ```sql
 MATCH(Year {year: "2006"})-[:RELEASED]-(:Movie)-[:ACTED]-(p:Person) 
@@ -141,7 +141,7 @@ MATCH (:Person {name: "David Yates"})-[:DIRECTED]-(:Movie)-[:ACTED]-(a:Person)
 RETURN count(distinct a)
 ```
 
-**Get genres Christian Bale appeared in**
+**Get genres Christian Bale appeared in**  
 _cypher_
 ```sql
 MATCH(p:Person {name:"Christian Bale"})-[:ACTED]-(:Movie)-[:GENRE]-(g:Genre)
@@ -211,13 +211,13 @@ ___
 
 
 ### Load Data
-**add data**
+**add data**  
 _mongo shell_
 ```js
 ...
 ```
 
-**alternative add data**
+**alternative add data**  
 _bash shell_
 ```bash
 mongoimport --db DB_NAME --collection COL_NAME --file FILE_NAME.json --jsonArray
@@ -225,19 +225,19 @@ mongoimport --db DB_NAME --collection COL_NAME --file FILE_NAME.json --jsonArray
 
 ### Queries
 
-**Get name of persons who acted in a movie in 2006**
+**Get name of persons who acted in a movie in 2006**  
 _mongo shell_
 ```js
 ...
 ```
 
-**Get amount of persons that acted in a movie directed by David Yates**
+**Get amount of persons that acted in a movie directed by David Yates**  
 _mongo shell_
 ```js
 ...
 ```
 
-**Get genres Christian Bale appeared in**
+**Get genres Christian Bale appeared in**  
 _mongo shell_
 ```js
 ...
@@ -249,7 +249,7 @@ _mongo shell_
 
 
 
-**Get storage size**
+**Get storage size**  
 _mongo shell_
 ```js
 db.collection.totalSize()
