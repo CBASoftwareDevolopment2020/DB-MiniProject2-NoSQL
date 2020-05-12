@@ -127,21 +127,21 @@ MERGE (m)-[:ACTED]-(a)
 
 ### Queries
 
-**Get name of persons who acted in a movie in 2006**  
+**Get name of persons who acted in a movie in 2006** | neo4j_query_1  
 _cypher shell_
 ```sql
 MATCH(Year {year: "2006"})-[:RELEASED]-(:Movie)-[:ACTED]-(p:Person) 
 return p.name
 ```
 
-**Get amount of persons that acted in a movie directed by David Yates**  
+**Get amount of persons that acted in a movie directed by David Yates** | neo4j_query_2  
 _cypher shell_
 ```sql
 MATCH (:Person {name: "David Yates"})-[:DIRECTED]-(:Movie)-[:ACTED]-(a:Person) 
 RETURN count(distinct a)
 ```
 
-**Get genres Christian Bale appeared in**  
+**Get genres Christian Bale appeared in** | neo4j_query_3  
 _cypher shell_
 ```sql
 MATCH(p:Person {name:"Christian Bale"})-[:ACTED]-(:Movie)-[:GENRE]-(g:Genre)
@@ -193,6 +193,9 @@ ___
 
 
 ### Load Data
+
+Add `data/data.json` to the selected database collection.
+
 **add data**  
 _mongo shell_
 ```js
@@ -207,7 +210,7 @@ mongoimport --db mini_project --collection main --file data/data.json --jsonArra
 
 ### Queries
 
-**Get name of persons who acted in a movie in 2006**  
+**Get name of persons who acted in a movie in 2006** | mongo_query_1  
 _mongo shell_
 ```javascript
 db.collection.aggregate([ 
@@ -229,7 +232,7 @@ db.collection.aggregate([
 ]);
 ```
 
-**Get amount of persons that acted in a movie directed by David Yates**  
+**Get amount of persons that acted in a movie directed by David Yates**  | mongo_query_2  
 _mongo shell_
 ```javascript
 db.collection.aggregate([ 
@@ -251,7 +254,7 @@ db.collection.aggregate([
 ]);
 ```
 
-**Get genres Christian Bale appeared in**  
+**Get genres Christian Bale appeared in** | mongo_query_3  
 _mongo shell_
 ```javascript
 db.collection.aggregate([ 
@@ -284,8 +287,13 @@ mongo_client = MongoClient("mongodb://localhost:27017/")
 mongo_db = mongo_client["mini_project"]
 mongo_col = mongo_db["main"]
 
+# Get name of persons who acted in a movie in 2006
 print("mongo query 1", timeit(mongo_query_1, number=5000))
+
+# Get amount of persons that acted in a movie directed by David Yates
 print("mongo query 2", timeit(mongo_query_2, number=5000))
+
+# Get genres Christian Bale appeared in
 print("mongo query 3", timeit(mongo_query_3, number=5000))
 ```
 
