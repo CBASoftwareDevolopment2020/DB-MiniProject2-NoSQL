@@ -185,7 +185,7 @@ _cypher shell_
 _response_
 ```sql
 Store Size
-Size	23.35 MiB
+Size	2.22 MiB
 ```
 
 ___
@@ -197,12 +197,6 @@ ___
 Add `data/data.json` to the selected database collection.
 
 **add data**  
-_mongo shell_
-```js
-...
-```
-
-**alternative add data**  
 _bash shell_
 ```bash
 mongoimport --db mini_project --collection main --file data/data.json --jsonArray
@@ -213,69 +207,33 @@ mongoimport --db mini_project --collection main --file data/data.json --jsonArra
 **Get name of persons who acted in a movie in 2006** | mongo_query_1  
 _mongo shell_
 ```javascript
-db.collection.aggregate([ 
-    { '$match' : { 'Year':2006 } }, 
-    {'$group': {
-        '_id': 0,
-        "actors": { '$push': '$Actors' }
-    }},
-    { '$project': {
-        '_id': 0, 
-        'unique_actors': { 
-            '$reduce': {
-                'input': '$actors',
-                'initialValue': [],
-                'in': { '$setUnion': [ '$$value', '$$this' ] }
-            }
-        }
-    }}
-]);
+db.collection.aggregate([
+    { '$match': { 'Year': 2006 } },
+    { '$unwind': '$Actors' },
+    { '$group': { '_id': None, 'res': { '$addToSet': '$Actors' } } }
+])
 ```
 
 **Get amount of persons that acted in a movie directed by David Yates**  | mongo_query_2  
 _mongo shell_
 ```javascript
-db.collection.aggregate([ 
-    { '$match' : { 'Director':'David Yates' } }, 
-    {'$group': {
-        '_id': 0,
-        "actors": { '$push': '$Actors' }
-    }},
-    { '$project': {
-        '_id': 0, 
-        'unique_actors': { '$size' : { 
-            '$reduce': {
-                'input': '$actors',
-                'initialValue': [],
-                'in': { '$setUnion': [ '$$value', '$$this' ] }
-            }
-        }} 
-    }}
+db.collection.aggregate([
+    { '$match': { 'Director': 'David Yates' } },
+    { '$unwind': '$Actors' },
+    { '$group': { '_id': None, 'res': { '$addToSet': '$Actors' } } },
+    { '$project': { 's': { '$size': '$res' } } }
 ]);
 ```
 
 **Get genres Christian Bale appeared in** | mongo_query_3  
 _mongo shell_
 ```javascript
-db.collection.aggregate([ 
-    { '$match' : { 'Actors': { '$elemMatch': { '$eq': 'Christian Bale' } }}}, 
-    {'$group': {
-        '_id': 0,
-        "genres": { '$push': '$Genre' }
-    }},
-    { '$project': {
-        '_id': 0, 
-        'unique_genres': { 
-            '$reduce': {
-                'input': '$genres',
-                'initialValue': [],
-                'in': { '$setUnion': [ '$$value', '$$this' ] }
-            }
-        }
-    }}
+db.collection.aggregate([
+    { '$match': { 'Actors': { '$elemMatch': { '$eq': 'Christian Bale' } } } },
+    { '$unwind': '$Genre' },
+    { '$group': { '_id': None, 'res': { '$addToSet': '$Genre' } } }
 ]);
 ```
-
 
 ### Performance & Storage
 
@@ -299,9 +257,9 @@ print("mongo query 3", timeit(mongo_query_3, number=5000))
 
 _response_
 ```bash
-mongo query 1: 33.29551158200047
-mongo query 2: 22.59746971599816
-mongo query 3: 20.810547129000042
+mongo query 1: 23.863425428000028
+mongo query 2: 20.93231320299992
+mongo query 3: 22.32942827199986
 ```
 
 
@@ -313,16 +271,23 @@ db.collection.totalSize()
 
 _response_
 ```
-335872?
+483.6 KB
 ```
 
 ___
-## Conclusion
+## Evaluation
 
 ### Syntax
-### Storage
-### Performance
-### ACID & CAP Theorem
 
-#### Acid
-#### CAP Theorem
+
+
+### Storage & Performance
+
+|   |Neo4j|Mongo DB|
+|---|---|---|
+|Storage|2.22 Mb|0.48 Mb|
+|Time 500 Q1|6.958 s|23.863 s|
+|Time 500 Q2|5.730 s|20.932 s|
+|Time 500 Q3|5.310 s|22.329 s|
+
+### Conclusion
