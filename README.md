@@ -306,33 +306,7 @@ ___
   
 ###  Syntax
   
-  
-**Get All Entities**  
-Get all entities from collection.
-  
-_cypher shell_
-```sql
-MATCH(n)-(r)-(m) RETURN n, r, m
-```
-  
-_mongo shell_
-```javascript
-db.collection.find({})
-```
-  
-**Get Specific Entity**  
-Get a specific entity from collection.
-  
-_cypher shell_
-```sql
-MATCH(n { name: 'some_name' }) RETURN n
-```
-  
-_mongo shell_
-```javascript
-db.collection.find({ name: 'some_name' })
-```
-  
+We saw the simplistic and readable syntax of Neo4j in the previous queries where Mongo DB contained a lot of custom aggregation functions. The aggregation function can be hard to understand without any explanation, whereas Neo4j's syntax is easy to understand.  
   
 ###  Storage & Performance
   
@@ -348,7 +322,7 @@ db.collection.find({ name: 'some_name' })
   
   
 **Syntax**  
-We found the best syntax to be **Cypher** from Neo4j because of the readability, usage and relation access, also a big different from others is the way to convert otherwise complex queries into simple. Mongo contains allot of great features but the gets bloated when calling more advanced queries.
+We found the best syntax to be **Cypher** from Neo4j because of the readability, usage and relation access, also a big different from others is the way to convert otherwise complex queries into simple. Mongo contains a lot of great features but the gets bloated when calling more advanced queries.
   
 **Storage**  
 The database which uses the least memory is **Mongo DB**. The size of a Mongo database is roughly 20% of a Neo4j database.
@@ -357,5 +331,5 @@ The database which uses the least memory is **Mongo DB**. The size of a Mongo da
 The fastest database is **Neo4j**. Being about 4 times faster than Mongo.
   
 **Overall**  
-We picked **Neo4j** as the best database, mainly because performance is more important than storage, and the simplicity of a can speed up production time.
+We picked **Neo4j** as the best database, mainly because performance is more important than storage, and the simplicity of the syntax can speed up production time.
   
