@@ -170,9 +170,9 @@ driver.close()
 
 _response_
 ```bash
-neo4j query 1: 6.957793999999922
-neo4j query 2: 5.730350099999896
-neo4j query 3: 5.3102682999999615
+neo4j query 1: 19.043925968000053
+neo4j query 2: 14.960240066999972
+neo4j query 3: 13.12418252200007
 ```
 
 **Storage Size**  
@@ -256,9 +256,9 @@ print("mongo query 3", timeit(mongo_query_3, number=5000))
 
 _response_
 ```bash
-mongo query 1: 23.863425428000028
-mongo query 2: 20.93231320299992
-mongo query 3: 22.32942827199986
+mongo query 1: 12.316579582000031
+mongo query 2: 10.831449104000058
+mongo query 3: 11.603583000000071
 ```
 
 
@@ -284,9 +284,9 @@ We saw the simplistic and readable syntax of Neo4j in the previous queries where
 |   |Neo4j|Mongo DB|
 |---|---|---|
 |Storage|2.22 Mb|0.48 Mb|
-|Time 500 Q1|6.958 s|23.863 s|
-|Time 500 Q2|5.730 s|20.932 s|
-|Time 500 Q3|5.310 s|22.329 s|
+|Time 500 Q1|19.044 s|12.317 s|
+|Time 500 Q2|14.960 s|10.831 s|
+|Time 500 Q3|13.124 s|11.604 s|
 
 ### Conclusion
 
@@ -297,7 +297,7 @@ We found the best syntax to be **Cypher** from Neo4j because of the readability,
 The database which uses the least memory is **Mongo DB**. The size of a Mongo database is roughly 20% of a Neo4j database.
 
 **Performance**  
-The fastest database is **Neo4j**. Being about 4 times faster than Mongo.
+The fastest database is **Mongo DB** being faster in all queries.
 
 **Overall**  
-We picked **Neo4j** as the best database, mainly because performance is more important than storage, and the simplicity of the syntax can speed up production time.
+We picked **Neo4j** as the best database, mainly because the simplicity of the syntax can speed up production time. The performance difference is a minor issue even if **Mongo DB** was faster the response time wouldn't be notices in a real application.
