@@ -105,7 +105,7 @@ ___
 ###  Load Data
   
   
-Add `data.csv` to the import folder for the selected database.
+Add `data/data.csv` to the import folder for the selected database.
   
 **add nodes**  
 _cypher shell_
@@ -159,7 +159,7 @@ MATCH(Year {year: "2006"})-[:RELEASED]-(:Movie)-[:ACTED]-(p:Person)
 return p.name
 ```
   
-**Get amount of persons that acted in a movie directed by David Yates**
+**Get amount of persons that acted in a movie directed by David Yates**  
 _cypher shell_
 ```sql
 MATCH (:Person {name: "David Yates"})-[:DIRECTED]-(:Movie)-[:ACTED]-(a:Person) 
