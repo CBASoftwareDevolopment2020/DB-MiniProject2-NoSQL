@@ -38,8 +38,7 @@ comparison criteria
 
 It is recommended to consider using ACID and CAP as reference.
 
-Your conclusion would contribute to the recommendations for making choices of database types for
-specific use cases.
+Your conclusion would contribute to the recommendations for making choices of database types for specific use cases.
 
 ### Notes {ignore=true}
 This is a group assignment. Some groups will be asked to present their solutions to the class.
@@ -279,6 +278,31 @@ ___
 
 ### Syntax
 
+**Get All Entities**  
+Get all entities from collection.
+
+_cypher shell_
+```sql
+MATCH(n)-(r)-(m) RETURN n, r, m
+```
+
+_mongo shell_
+```javascript
+db.collection.find({})
+```
+
+**Get Specific Entity**  
+Get a specific entity from collection.
+
+_cypher shell_
+```sql
+MATCH(n { name: 'some_name' }) RETURN n
+```
+
+_mongo shell_
+```javascript
+db.collection.find({ name: 'some_name' })
+```
 
 
 ### Storage & Performance
@@ -291,3 +315,15 @@ ___
 |Time 500 Q3|5.310 s|22.329 s|
 
 ### Conclusion
+
+**Syntax**  
+We found the best syntax to be **Cypher** from Neo4j because of the readability, usage and relation access, also a big different from others is the way to convert otherwise complex queries into simple. Mongo contains allot of great features but the gets bloated when calling more advanced queries.
+
+**Storage**  
+The database which uses the least memory is **Mongo DB**. The size of a Mongo database is roughly 20% of a Neo4j database.
+
+**Performance**  
+The fastest database is **Neo4j**. Being about 4 times faster than Mongo.
+
+**Overall**  
+We picked **Neo4j** as the best database, mainly because performance is more important than storage, and the simplicity of a can speed up production time.
