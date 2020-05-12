@@ -194,7 +194,7 @@ func2 5.730350099999896
 func3 5.3102682999999615
 ```
 
-**Storage Size**
+**Storage Size**  
 _cypher shell_
 ```sql
 :sysinfo
