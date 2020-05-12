@@ -154,44 +154,26 @@ return count(g), g.name
 **Performance Time**
 
 _python_
-```js
-from timeit import timeit
-from neo4j import GraphDatabase
-
+```python
 driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "1234"))
 
-def func1():
-    with driver.session() as session:
-        m ='''MATCH(y:Year)-[r:RELEASED]-(m:Movie)-[a:ACTED]-(p:Person)
-        WHERE y.year = "2006"
-        return p.name'''
-        r = session.run(m)
+# Get name of persons who acted in a movie in 2006
+print("neo4j query 1", timeit(neo4j_query_1, number=5000))
 
-def func2():
-    with driver.session() as session:
-        m ='''MATCH (d:Person)-[:DIRECTED]-(:Movie)-[:ACTED]-(a:Person) 
-        WHERE d.name = "David Yates"
-        RETURN count(distinct a)'''
-        r = session.run(m)
+# Get amount of persons that acted in a movie directed by David Yates
+print("neo4j query 2", timeit(neo4j_query_2, number=5000))
 
-def func3():
-    with driver.session() as session:
-        m ='''MATCH (:Person {name:"Christian Bale"})-[:ACTED]-(:Movie)-[:GENRE]-(g:Genre) 
-        RETURN count(g), g.name'''
-        r = session.run(m)
-
-print("func1", timeit(func1, number=5000))
-print("func2", timeit(func2, number=5000))
-print("func3", timeit(func3, number=5000))
+# Get genres Christian Bale appeared in
+print("neo4j query 3", timeit(neo4j_query_3, number=5000))
 
 driver.close()
 ```
 
 _response_
-```sql
-func1 6.957793999999922
-func2 5.730350099999896
-func3 5.3102682999999615
+```bash
+neo4j query 1: 6.957793999999922
+neo4j query 2: 5.730350099999896
+neo4j query 3: 5.3102682999999615
 ```
 
 **Storage Size**  
@@ -227,26 +209,92 @@ mongoimport --db mini_project --collection main --file data/data.json --jsonArra
 
 **Get name of persons who acted in a movie in 2006**  
 _mongo shell_
-```js
-...
+```javascript
+db.collection.aggregate([ 
+    { '$match' : { 'Year':2006 } }, 
+    {'$group': {
+        '_id': 0,
+        "actors": { '$push': '$Actors' }
+    }},
+    { '$project': {
+        '_id': 0, 
+        'unique_actors': { 
+            '$reduce': {
+                'input': '$actors',
+                'initialValue': [],
+                'in': { '$setUnion': [ '$$value', '$$this' ] }
+            }
+        }
+    }}
+]);
 ```
 
 **Get amount of persons that acted in a movie directed by David Yates**  
 _mongo shell_
-```js
-...
+```javascript
+db.collection.aggregate([ 
+    { '$match' : { 'Director':'David Yates' } }, 
+    {'$group': {
+        '_id': 0,
+        "actors": { '$push': '$Actors' }
+    }},
+    { '$project': {
+        '_id': 0, 
+        'unique_actors': { '$size' : { 
+            '$reduce': {
+                'input': '$actors',
+                'initialValue': [],
+                'in': { '$setUnion': [ '$$value', '$$this' ] }
+            }
+        }} 
+    }}
+]);
 ```
 
 **Get genres Christian Bale appeared in**  
 _mongo shell_
-```js
-...
+```javascript
+db.collection.aggregate([ 
+    { '$match' : { 'Actors': { '$elemMatch': { '$eq': 'Christian Bale' } }}}, 
+    {'$group': {
+        '_id': 0,
+        "genres": { '$push': '$Genre' }
+    }},
+    { '$project': {
+        '_id': 0, 
+        'unique_genres': { 
+            '$reduce': {
+                'input': '$genres',
+                'initialValue': [],
+                'in': { '$setUnion': [ '$$value', '$$this' ] }
+            }
+        }
+    }}
+]);
 ```
 
 
 ### Performance & Storage
 
+**Performance Time**
 
+_python_
+```python
+mongo_client = MongoClient("mongodb://localhost:27017/")
+mongo_db = mongo_client["mini_project"]
+mongo_col = mongo_db["main"]
+
+print("mongo query 1", timeit(mongo_query_1, number=5000))
+print("mongo query 2", timeit(mongo_query_2, number=5000))
+print("mongo query 3", timeit(mongo_query_3, number=5000))
+```
+
+_response_
+```bash
+mongo query 1: 33.29551158200047
+mongo query 2: 22.59746971599816
+mongo query 3: 20.810547129000042
+```
 
 
 **Get storage size**  
@@ -257,7 +305,7 @@ db.collection.totalSize()
 
 _response_
 ```
-...
+335872?
 ```
 
 ___
