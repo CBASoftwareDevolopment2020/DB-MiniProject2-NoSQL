@@ -90,7 +90,7 @@ LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
 MERGE (m:Movie {title: row.Title, description: row.Description, runtime: row.Runtime, rating: row. Rating, revenue: coalesce(row.Revenue, 0), metascore: coalesce(row.Metascore, 0)})
 MERGE (e:Year {year: row.Year})
 MERGE (d:Person {name: row.Director})
-FOREACH(n IN split(row.Actors, ", ")|MERGE (a:Person {name: n}))
+FOREACH(n IN split(row.Actors, ",")|MERGE (a:Person {name: trim(n)}))
 FOREACH(n IN split(row.Genre, ",")|MERGE (e:Genre {name: n}))
 ```
 
@@ -120,8 +120,8 @@ _cypher shell_
 ```sql
 LOAD CSV WITH HEADERS FROM 'file:///data.csv' AS row
 MATCH (m:Movie {title: row.Title})
-UNWIND split(row.Actors, ", ") AS n
-MATCH (a:Person {name: n})
+UNWIND split(row.Actors, ",") AS n
+MATCH (a:Person {name: trim(n)})
 MERGE (m)-[:ACTED]-(a)
 ```
 
@@ -220,7 +220,7 @@ _mongo shell_
 **alternative add data**  
 _bash shell_
 ```bash
-mongoimport --db DB_NAME --collection COL_NAME --file FILE_NAME.json --jsonArray
+mongoimport --db mini_project --collection main --file data/data.json --jsonArray
 ```
 
 ### Queries
